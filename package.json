@@ -1,0 +1,32 @@
+{
+  "name": "host",
+  "version": "0.0.1",
+  "description": "host manage",
+  "main": "host.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "bin": {
+    "host": "./bin/host"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qiu8310/host"
+  },
+  "keywords": [
+    "host",
+    "manage"
+  ],
+  "author": "Zhonglei Qiu",
+  "license": "MIT",
+  "devDependencies": {
+    "matchdep": "~0.1.2",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/qiu8310/host/issues"
+  }
+}

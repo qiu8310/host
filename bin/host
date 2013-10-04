@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+var host = require('../host');
+
+
+var command, commands = ['get', 'set', 'del', 'enable', 'disable', 'ip'],
+	params = [],
+	options = {}, tag = false, optionTags = ['c', 'e'];
+
+command = process.argv[2];
+if (!command || commands.indexOf(command) === -1) {
+	if (command !== '-h') {
+		console.log('');
+		console.log('command not find' + (command ? ': ' + command : ''));
+	}
+	usage();
+}
+
+for (var arg, i=3, l=process.argv.length; i<l; i++) {
+	arg = process.argv[i];
+	if (arg[0] === '-' && arg[1] !== '-') {
+		tag = arg.substr(1);
+		if (tag === 'h') usage();
+	} else {
+		if (tag !== false) {
+			options[tag] = arg;
+		} else {
+			params.push(arg);
+		}
+		tag = false;
+	}
+}
+
+if (params.length === 0) {
+	console.log('');
+	console.log('no params');
+}
+
+if (command === 'set') {
+	var domain = params[0], ip = params[1], group = params[2], enabled = options.e, comment = options.c;
+	host.set(ip, domain, group, enabled, comment);
+} else {
+	var rtn = host[command].apply(host, params);
+	if (rtn) {
+		if (command === 'get') {
+			rtn.forEach( function (host) {'use strict'; console.log(host.toString() + '  \t  ' + 'group: ' + host.group );} );
+		}
+	}
+}
+
+
+function usage () {
+	'use strict';
+	var log = console.log;
+	log ('');
+	log ('usage: \thost <command> <params> [options]');
+	log ('');
+	log ('\tcommand: \tget | set | del | enable | disable | ip');
+	log ('');
+	log ('\tparams: \t[ip string] [domain string] [group string]');
+	log ('');
+	log ('\toptions:\t-h | -c comment | -e isEnabled');
+	log ('');
+	log ('example:');
+	log ('\thost -h \t\t\t\t# show this help');
+	log ('');
+	log ('\thost get 127.0.0.1  \t\t\t# get ip(127.0.0.1)\'s host');
+	log ('\thost get plus.google.com default \t# get domain(plus.google.com) and group(default)\'s host');
+	log ('\thost get 127.0.0.1 192.168.1.101 \t# get ip(127.0.0.1) and ip(192.168.1.101)\'s host' );
+	log ('');
+	log ('\thost del 127.0.0.1');
+	log ('\thost del 127.0.0.1 192.168.1.101');
+	log ('\thost del "default" test.com');
+	log ('');
+	log ('\thost set <domain> <ip> [group] [-e enabled] [-c comment]');
+	log ('\thost set test.com 127.0.0.1 "personal use" -e true -c "this is comment"');
+	log ('');
+	log ('\thost enable 127.0.0.1');
+	log ('\thost enable test.com "google group" "personal use"');
+	log ('\thost disable 127.0.0.1 192.168.1.102');
+	log ('');
+	log ('\thost ip <old ip> <new ip> \t\t# change all <old ip> to <new ip>');
+	log ('\thost ip 192.168.1.101 192.168.1.102');
+	process.exit(1);
+}

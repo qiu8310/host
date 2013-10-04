@@ -1,0 +1,35 @@
+# default
+  127.0.0.1       		foo.com
+
+
+
+# Ubuntu Server
+  192.168.56.101  		test.com
+
+
+
+# UPDATE:2013-07-07 21:01
+  127.0.0.1       		localhost
+
+
+
+# Google Services START
+  203.208.46.200  		0.docs.google.com
+  203.208.46.200  		0.drive.google.com
+  203.208.46.200  		1.docs.google.com
+  203.208.46.200  		1.drive.google.com
+  203.208.46.200  		10.docs.google.com
+  203.208.46.200  		10.drive.google.com
+  203.208.46.200  		11.docs.google.com
+  203.208.46.200  		11.drive.google.com
+  203.208.46.200  		12.docs.google.com
+  203.208.46.200  		12.drive.google.com
+  203.208.46.200  		13.docs.google.com
+  111.0.0.1       		docs.googl.com
+
+
+
+# myekkkkee
+  127.0.0.1       		qiu.com
+
+
