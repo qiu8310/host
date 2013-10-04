@@ -1,6 +1,6 @@
 # host
 
-windows host file manage
+host file manage (only support IPv4)
 
 	usage:  host <command> <params> [options]
 	

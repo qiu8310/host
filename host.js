@@ -8,7 +8,8 @@ module.exports = (function () {
 		MAX_GROUP_NAME_LENGTH = 30,
 		EOL		= '\r\n',
 		fs		= require('fs'),
-		path	= require('path');
+		path	= require('path'),
+		exec	= require('child_process').exec;
 
 	var HOSTS_PATH = process.platform !== 'win32' ? '/etc/hosts' :
 						process.env.windir + path.sep + ['System32', 'drivers', 'etc', 'hosts'].join(path.sep),
@@ -161,12 +162,18 @@ module.exports = (function () {
 			if (hosts.length === 0) continue;
 			lines.push('# ' + hosts[0]['group']);
 			hosts.forEach(push);
-			lines.push(EOL + EOL);
+			lines.push(EOL);
 		}
 
 		fs.writeFileSync(HOSTS_PATH, lines.join(EOL), {encoding: 'utf8', flag: 'w'});
 	}
 	writeToHostsFile();
+	
+	function flushDNS () {
+		if (process.platform === 'win32') {
+			exec('ipconfig /flushdns');
+		}
+	}
 
 	self = {
 		Host: Host,
@@ -177,7 +184,6 @@ module.exports = (function () {
 
 		get : function () {
 			var matches = [], args = Array.prototype.slice.call(arguments, 0), push = function (host) { matches.push(host); };
-
 			args.forEach(function (arg) {
 				if (HOST_HASH_DOMAIN[arg]) {
 					push(HOST_HASH_DOMAIN[arg]);
@@ -213,6 +219,7 @@ module.exports = (function () {
 
 			updateHost(ip, domain, group, enabled, comment);
 			writeToHostsFile();
+			flushDNS();
 		},
 
 		del : function () {
@@ -220,6 +227,7 @@ module.exports = (function () {
 				delHost(host);
 			});
 			writeToHostsFile();
+			flushDNS();
 		},
 
 		enable:   function () {
@@ -227,6 +235,7 @@ module.exports = (function () {
 				host.enabled = true;
 			});
 			writeToHostsFile();
+			flushDNS();
 		},
 		
 		disable:  function () {
@@ -234,6 +243,7 @@ module.exports = (function () {
 				host.enabled = false;
 			});
 			writeToHostsFile();
+			flushDNS();
 		},
 		
 		ip : function (oldIp, newIp) {
@@ -245,6 +255,7 @@ module.exports = (function () {
 			if (!hosts || hosts.length === 0) return ;
 			hosts.forEach(function (host) { host.ip = newIp; });
 			writeToHostsFile();
+			flushDNS();
 		},
 
 		loadSmarthosts: function () {

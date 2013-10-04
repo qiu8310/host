@@ -30,6 +30,10 @@ for (var arg, i=3, l=process.argv.length; i<l; i++) {
 	}
 }
 
+if (command === 'get' && params.length === 0) {
+	params.push('default');
+}
+
 if (params.length === 0) {
 	console.log('');
 	console.log('no params');
@@ -39,10 +43,19 @@ if (command === 'set') {
 	var domain = params[0], ip = params[1], group = params[2], enabled = options.e, comment = options.c;
 	host.set(ip, domain, group, enabled, comment);
 } else {
-	var rtn = host[command].apply(host, params);
+	var f, rtn = host[command].apply(host, params);
 	if (rtn) {
 		if (command === 'get') {
-			rtn.forEach( function (host) {'use strict'; console.log(host.toString() + '  \t  ' + 'group: ' + host.group );} );
+			f = function (str, maxlength, direction) {
+				for (i=maxlength - str.length; i > 0; i--) {
+					str = direction === 'r' ? ' ' + str : str + ' ';
+				}
+				return str + '\t';
+			}
+			rtn.forEach( function (h) {
+				'use strict'; 
+				console.log( (h.enabled ? '  ' : '# ') + f(h.ip, 18) + f(h.domain, 25, 'r') + f(h.group, 25) + '\t ' + h.comment);
+			});
 		}
 	}
 }

@@ -1,7 +1,7 @@
 {
   "name": "host",
   "version": "0.0.1",
-  "description": "host manage",
+  "description": "host file manage (only support IPv4)",
   "main": "host.js",
   "scripts": {
     "test": "npm test"
