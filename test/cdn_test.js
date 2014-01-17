@@ -4,16 +4,16 @@ var host = require('../host'),
 	dns  = require('dns');
 		
 var hosts = [
-/*
+
+	{ip: '10.81.64.20', domain: 's0.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'},
 	{ip: '10.81.64.22', domain: 's0.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'},
 	{ip: '10.81.64.20', domain: 's1.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'},
 	{ip: '10.81.64.20', domain: 's2.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'},
 	{ip: '10.81.64.20', domain: 's3.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'},
-	{ip: '10.81.64.21', domain: 's4.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'}
-*/
+	{ip: '10.81.64.21', domain: 's4.apptuan.bdimg.com', test: '/static/mobile/common/lib/base_a02dbab9.js'},
 
 	{ip: '165.225.133.152', domain: 'nodejs.org', test: '/api/http.html'},
-	{ip: '165.225.133.150', domain: 'nodejs.org', test: '/api/noexist.html'},
+	{ip: '165.225.133.150', domain: 'nodejs.org', test: '/api/xxxx.html'},
 	{ip: '165.225.133.150', domain: 'nodejs.org', test: '/api/http.html'},
 	{ip: '165.225.133.152', domain: 'nodejs.org', test: '/api/http.html'}
 ];
@@ -37,7 +37,7 @@ function test (testHost, next) {
 	
 	// 添加当前域名及IP到 host 文件中
 	host.set(testHost.ip, testHost.domain, 'test_dns_group', true);
-	process.stdout.write(c('Test http://' + testHost.domain + testHost.test + ', ip ' + testHost.ip + '\t\t', 'gray'));
+	process.stdout.write(c(' ' + testHost.ip + ' ' + testHost.domain + ' ' + testHost.test + '\t\t', 'gray'));
 
 	var dnslookupTimes = 0, dnslookup;
 
